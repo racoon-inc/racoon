@@ -1,0 +1,4 @@
+rootProject.name = 'racoon'
+include 'racoon-storage'
+include 'racoon-node'
+include 'racoon-commons'
