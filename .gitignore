@@ -1,6 +1,7 @@
 .gradle
 /build/
 .idea/
+racoon.iml
 
 # Ignore Gradle GUI config
 gradle-app.setting
