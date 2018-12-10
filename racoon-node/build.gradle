@@ -10,5 +10,21 @@ repositories {
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile project(':racoon-storage')
+
+    compile 'com.beust:jcommander:1.72'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.9.7'
+    compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.7'
+    compile 'org.apache.logging.log4j:log4j-api:2.11.1'
+    compile 'org.apache.logging.log4j:log4j-core:2.11.1'
+    compile 'org.apache.logging.log4j:log4j-slf4j18-impl:2.11.1'
+   
+    compile 'org.pojomatic:pojomatic:2.2.1'
+
+    testCompile 'junit:junit:4.12'
+}
+
+configurations.all {
+    exclude group: "org.slf4j", module: "slf4j-log4j12"
+    exclude group: "log4j", module: "log4j"
 }
