@@ -1,0 +1,26 @@
+Configuration:
+  Appenders:
+    Console:
+      - name: Console
+        PatternLayout:
+          pattern: '%d{yyyy-MMM-dd HH:mm:ss a} [%t] %-5level %logger{36} - %msg%n'
+        target: SYSTEM_OUT
+      - name: Cli
+        PatternLayout:
+          pattern: '%msg%n'
+        target: SYSTEM_OUT
+    File:
+      PatternLayout:
+        pattern: '%d{yyyy-MMM-dd HH:mm:ss a} [%t] %-5level %logger{36} - %msg%n'
+      name: File
+      fileName: log/app.log
+  Loggers:
+    Root:
+      AppenderRef:
+      - ref: File
+      level: debug
+    Logger:
+      - name: run.racoon.node.RacoonNode
+        AppenderRef:
+        - ref: Cli
+        level: trace
