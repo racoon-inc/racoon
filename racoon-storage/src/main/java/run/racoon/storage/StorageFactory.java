@@ -1,6 +1,7 @@
 package run.racoon.storage;
 
-import run.racoon.storage.configuration.Configuration;
+import run.racoon.commons.storage.Storage;
+import run.racoon.commons.storage.configuration.Configuration;
 import run.racoon.storage.serialization.ProtobufDeserializer;
 import run.racoon.storage.serialization.ProtobufSerializer;
 

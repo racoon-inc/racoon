@@ -1,4 +1,4 @@
-package run.racoon.storage.configuration;
+package run.racoon.commons.storage.configuration;
 
 import java.util.List;
 
