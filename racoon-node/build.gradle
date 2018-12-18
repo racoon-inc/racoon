@@ -10,18 +10,18 @@ repositories {
 }
 
 dependencies {
-    compile project(':racoon-storage')
+    implementation project(':racoon-storage')
 
-    compile 'com.beust:jcommander:1.72'
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.9.7'
-    compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.7'
-    compile 'org.apache.logging.log4j:log4j-api:2.11.1'
-    compile 'org.apache.logging.log4j:log4j-core:2.11.1'
-    compile 'org.apache.logging.log4j:log4j-slf4j18-impl:2.11.1'
+    implementation 'com.beust:jcommander:1.72'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.7'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.7'
+    implementation 'org.apache.logging.log4j:log4j-api:2.11.1'
+    implementation 'org.apache.logging.log4j:log4j-core:2.11.1'
+    implementation 'org.apache.logging.log4j:log4j-slf4j18-impl:2.11.1'
    
-    compile 'org.pojomatic:pojomatic:2.2.1'
+    implementation 'org.pojomatic:pojomatic:2.2.1'
 
-    testCompile 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.12'
 }
 
 configurations.all {

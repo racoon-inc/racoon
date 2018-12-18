@@ -1,35 +1,55 @@
 package run.racoon.storage;
 
-import run.racoon.storage.configuration.Configuration;
-import run.racoon.storage.serialization.ValueDeserializer;
-import run.racoon.storage.serialization.ValueSerializer;
+import net.openhft.chronicle.hash.serialization.BytesReader;
+import net.openhft.chronicle.hash.serialization.BytesWriter;
+import net.openhft.chronicle.map.ChronicleMap;
+import net.openhft.chronicle.map.ChronicleMapBuilder;
+import run.racoon.commons.storage.Storage;
+import run.racoon.commons.storage.configuration.Configuration;
+import run.racoon.commons.storage.serialization.ValueDeserializer;
+import run.racoon.commons.storage.serialization.ValueSerializer;
 
 class RacoonStorage implements Storage {
 
-    private final ValueSerializer serializer;
-    private final ValueDeserializer deserializer;
+    private final ChronicleMap<String, Object> map;
 
     public RacoonStorage(ValueSerializer serializer,
-                         ValueDeserializer deserializer, Configuration storageConfiguration) {
-        this.serializer = serializer;
-        this.deserializer = deserializer;
+                         ValueDeserializer deserializer,
+                         Configuration config) {
+
+        // TODO: - Implement replication on config.nodes (only available on ChronicleMap enterprise)
+        //       - configure in file storage
+        map = ChronicleMapBuilder.of(String.class, Object.class)
+                .valueMarshallers(bytesReader(deserializer), bytesWriter(serializer))
+                .create();
     }
 
     @Override
     public void put(String key, Object value) {
-        var serializedValue = serializer.serialize(value);
-        // TODO: write to file?
+        map.put(key, value);
     }
 
     @Override
     public <T> T get(String key) {
-        var serializedValue = new byte[]{}; // TODO: read from file?
-        return deserializer.deserialize(serializedValue);
+        return (T) map.get(key);
     }
 
     @Override
     public boolean hasKey(String key) {
-        // TODO: check file?
-        return false;
+        return map.containsKey(key);
     }
+
+    @Override
+    public void close() {
+        this.map.close();
+    }
+
+    private BytesReader<Object> bytesReader(ValueDeserializer deserializer) {
+        return (in, using) -> deserializer.deserialize(in.toByteArray());
+    }
+
+    private BytesWriter<Object> bytesWriter(ValueSerializer serializer) {
+        return (out, toWrite) -> out.write(serializer.serialize(toWrite));
+    }
+
 }

@@ -10,5 +10,6 @@ repositories {
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    implementation project(':racoon-commons')
+    implementation 'net.openhft:chronicle-map:3.17.0'
 }
