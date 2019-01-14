@@ -1,7 +1,7 @@
 package run.racoon.node.handlers;
 
+import run.racoon.commons.storage.Storage;
 import run.racoon.node.domain.Event;
-import run.racoon.storage.Storage;
 
 public class SourceRegistrationHandler implements EventHandler {
     private final Storage storage;
