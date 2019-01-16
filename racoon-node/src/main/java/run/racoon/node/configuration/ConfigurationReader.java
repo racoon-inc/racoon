@@ -1,6 +1,9 @@
 package run.racoon.node.configuration;
 
+import run.racoon.node.configuration.exceptions.ConfigValidationException;
+import run.racoon.node.configuration.exceptions.ParseException;
 import run.racoon.node.configuration.sources.ConfigurationSource;
+import run.racoon.node.configuration.validation.ConfigValidator;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -12,12 +15,14 @@ import static java.util.Optional.ofNullable;
 
 public class ConfigurationReader {
     private final List<ConfigurationSource> sources;
+    private final ConfigValidator validator;
 
-    public ConfigurationReader(List<ConfigurationSource> sources) {
+    public ConfigurationReader(List<ConfigurationSource> sources, ConfigValidator validator) {
         this.sources = sources;
+        this.validator = validator;
     }
 
-    public <T> T readConfiguration(Class<T> configurationClass) {
+    public <T> T readConfiguration(Class<T> configurationClass) throws ConfigValidationException {
         T instance = getInstanceOrThrow(configurationClass);
 
         Field[] fields = configurationClass.getDeclaredFields();
@@ -36,7 +41,7 @@ public class ConfigurationReader {
                     });
         }
 
-        // TODO: validate configs
+        this.validator.validate(instance);
         return instance;
     }
 

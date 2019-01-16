@@ -4,10 +4,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import run.racoon.node.configuration.Configuration;
 import run.racoon.node.configuration.ConfigurationReader;
+import run.racoon.node.configuration.exceptions.ConfigValidationException;
 import run.racoon.node.configuration.sources.ArgsConfiguration;
 import run.racoon.node.configuration.sources.ConfigurationSource;
 import run.racoon.node.configuration.sources.EnvironmentSource;
 import run.racoon.node.configuration.sources.YamlSource;
+import run.racoon.node.configuration.validation.ConfigValidator;
 import run.racoon.node.handlers.EventHandler;
 import run.racoon.node.handlers.SourceRegistrationHandler;
 import run.racoon.node.handlers.StartPipelineHandler;
@@ -36,7 +38,14 @@ public class RacoonNode {
         var file = new File(classLoader.getResource("default.yml").getFile());
         configurationSources.add(new YamlSource(file.getAbsolutePath()));
 
-        Configuration config = new ConfigurationReader(configurationSources).readConfiguration(Configuration.class);
+        Configuration config = null;
+        try {
+            config = new ConfigurationReader(configurationSources, new ConfigValidator())
+                    .readConfiguration(Configuration.class);
+        } catch (ConfigValidationException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
 
         LOG.info("Using configuration: {}", config);
         var storageConfiguration = new RacoonStorageConfiguration(Collections.emptyList(), config.getName());

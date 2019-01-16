@@ -3,12 +3,14 @@ package run.racoon.node.configuration;
 import org.pojomatic.Pojomatic;
 import org.pojomatic.annotations.AutoProperty;
 
+import javax.validation.constraints.NotBlank;
 import java.util.Collections;
 import java.util.List;
 
 @AutoProperty
 public class Configuration {
 
+    @NotBlank
     @Config(name = "name", description = "Racoon name")
     private String name;
 

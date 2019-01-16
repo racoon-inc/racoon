@@ -2,9 +2,11 @@ package run.racoon.node.configuration
 
 import org.junit.Rule
 import org.junit.contrib.java.lang.system.EnvironmentVariables
+import run.racoon.node.configuration.exceptions.ConfigValidationException
 import run.racoon.node.configuration.sources.ArgsConfiguration
 import run.racoon.node.configuration.sources.EnvironmentSource
 import run.racoon.node.configuration.sources.YamlSource
+import run.racoon.node.configuration.validation.ConfigValidator
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -12,10 +14,12 @@ class ConfigurationReaderTest extends Specification {
     @Rule
     EnvironmentVariables environmentVariables = new EnvironmentVariables()
 
+    private validator = new ConfigValidator()
+
     @Unroll
     def "Reads name #name from args #args"() {
         setup:
-        def confReader = new ConfigurationReader([new ArgsConfiguration(args as String[])])
+        def confReader = new ConfigurationReader([new ArgsConfiguration(args as String[])], validator)
         def conf = confReader.readConfiguration(Configuration.class)
 
         expect:
@@ -38,7 +42,7 @@ class ConfigurationReaderTest extends Specification {
                 new ArgsConfiguration(["--name", "coon"] as String[]),
                 new YamlSource(file.getAbsolutePath())
 
-        ])
+        ], validator)
 
         when:
         def conf = confReader.readConfiguration(Configuration.class)
@@ -59,12 +63,23 @@ class ConfigurationReaderTest extends Specification {
                 new EnvironmentSource(),
                 new YamlSource(file.getAbsolutePath())
 
-        ])
+        ], validator)
         when:
         def conf = confReader.readConfiguration(Configuration.class)
 
         then:
         conf.name == "cooncoon"
+    }
+
+    def "Fails on invalid configs"() {
+        setup:
+        def confReader = new ConfigurationReader([
+                new ArgsConfiguration([] as String[])], validator)
+        when:
+        confReader.readConfiguration(Configuration.class)
+
+        then:
+        thrown ConfigValidationException
     }
 
 }
