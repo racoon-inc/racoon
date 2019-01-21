@@ -1,0 +1,6 @@
+name: coon
+peers:
+  - racoon1
+  - racoon2
+storage:
+  path: /bar
