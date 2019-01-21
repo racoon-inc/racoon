@@ -76,11 +76,24 @@ public class ConfigurationReader {
     }
 
     private Object convert(Object value, Class<?> typeClass) {
+        if (value == null) {
+            return null;
+        }
+
+        String strValue = value.toString();
+
+        if (typeClass == Class.class) {
+            try {
+                return Class.forName(strValue);
+            } catch (ClassNotFoundException e) {
+                throw new ParseException("Class not found " + strValue);
+            }
+        }
+
         if (typeClass.isAssignableFrom(value.getClass())) {
             return value;
         }
 
-        String strValue = value.toString();
         if (typeClass.isAssignableFrom(Boolean.class)) {
             return Boolean.valueOf(strValue);
         } else if (typeClass == Long.class) {
