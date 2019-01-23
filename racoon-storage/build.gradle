@@ -11,5 +11,5 @@ repositories {
 
 dependencies {
     implementation project(':racoon-commons')
-    implementation 'net.openhft:chronicle-map:3.17.0'
+    compile 'net.openhft:chronicle-map:3.17.0'
 }

@@ -2,10 +2,12 @@ package run.racoon.node.configuration;
 
 import org.pojomatic.Pojomatic;
 import org.pojomatic.annotations.AutoProperty;
+import run.racoon.commons.storage.Storage;
 
 import javax.validation.constraints.NotBlank;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @AutoProperty
 public class Configuration {
@@ -21,7 +23,7 @@ public class Configuration {
     private List<String> peers = Collections.emptyList();
 
     @Config(name = "storage", description = "Storage configuration")
-    private Storage storage;
+    private StorageConfiguration storageConfiguration;
 
 
     public Configuration() {
@@ -51,12 +53,12 @@ public class Configuration {
         this.peers = peers;
     }
 
-    public Storage getStorage() {
-        return storage;
+    public StorageConfiguration getStorageConfiguration() {
+        return storageConfiguration;
     }
 
-    public void setStorage(Storage storage) {
-        this.storage = storage;
+    public void setStorageConfiguration(StorageConfiguration storageConfiguration) {
+        this.storageConfiguration = storageConfiguration;
     }
 
     @Override
@@ -65,16 +67,27 @@ public class Configuration {
     }
 
     @AutoProperty
-    public static class Storage {
-        @Config(name = "path", description = "path to storage dir")
-        private String path;
+    public static class StorageConfiguration {
+        @Config(name = "class", description = "Storage class name")
+        private Class<? extends Storage> engineClass;
 
-        public String getPath() {
-            return path;
+        @Config(name = "parameters", description = "Storage engine specific parameters")
+        private Map<String, String> parameters;
+
+        public Class<? extends Storage> getEngineClass() {
+            return engineClass;
         }
 
-        public void setPath(String path) {
-            this.path = path;
+        public void setEngineClass(Class<? extends Storage> engineClass) {
+            this.engineClass = engineClass;
+        }
+
+        public Map<String, String> getParameters() {
+            return parameters;
+        }
+
+        public void setParameters(Map<String, String> parameters) {
+            this.parameters = parameters;
         }
 
         @Override

@@ -7,6 +7,7 @@ import run.racoon.node.configuration.sources.ArgsConfiguration
 import run.racoon.node.configuration.sources.EnvironmentSource
 import run.racoon.node.configuration.sources.YamlSource
 import run.racoon.node.configuration.validation.ConfigValidator
+import run.racoon.storage.InFileStorage
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -25,13 +26,13 @@ class ConfigurationReaderTest extends Specification {
         expect:
         conf.name == name
         conf.peers == peers
-        conf.storage?.path == path
+        conf.storageConfiguration?.engineClass == clazz
 
         where:
-        args                                                   | name     | peers        | path
-        ["--name", "racoon", "--storage.path", "/foo"]         | "racoon" | []           | "/foo"
-        ["--name", "racoon", "0"]                              | "racoon" | []           | null
-        ["--name", "racoon", "--peers", "c1", "--peers", "c2"] | "racoon" | ["c1", "c2"] | null
+        args                                                                      | name     | peers        | clazz
+        ["--name", "racoon", "--storage.class", InFileStorage.getCanonicalName()] | "racoon" | []           | InFileStorage
+        ["--name", "racoon", "0"]                                                 | "racoon" | []           | null
+        ["--name", "racoon", "--peers", "c1", "--peers", "c2"]                    | "racoon" | ["c1", "c2"] | null
     }
 
     def "Reads configs from yaml with and overrides with args, when args primary"() {
@@ -50,7 +51,6 @@ class ConfigurationReaderTest extends Specification {
         then:
         conf.name == "coon"
         conf.peers == ["racoon1", "racoon2"]
-        conf.storage.path == "/bar"
     }
 
     def "Overrides yaml with env variables, when arg not set"() {
