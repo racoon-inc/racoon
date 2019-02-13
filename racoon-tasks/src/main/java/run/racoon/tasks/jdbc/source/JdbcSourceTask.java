@@ -43,7 +43,7 @@ public class JdbcSourceTask implements SourceTask<JdbcSourceTaskState> {
                 if (!resultSet.next()) {
                     break;
                 }
-                var builder = new Record.Builder();
+                var builder = Record.Builder.newBuilder();
                 for (int i = 1; i <= meta.getColumnCount(); i++) {
                     builder.cell(meta.getColumnName(i), resultSet.getObject(i));
                 }

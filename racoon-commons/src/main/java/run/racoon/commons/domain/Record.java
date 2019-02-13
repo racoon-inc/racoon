@@ -1,52 +1,41 @@
 package run.racoon.commons.domain;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Record {
-    private final Set<Cell> cells;
-    // TODO: Do we need offset there?
-    private final Long offset;
+    private final Map<String, Object> cells;
 
-    public Record(Set<Cell> cells, Long offset) {
+    private Record(Map<String, Object> cells) {
         this.cells = cells;
-        this.offset = offset;
     }
 
-    public Optional<Cell> getByName(String name) {
-        return cells.stream().filter(c -> c.getName().equals(name)).findFirst();
-    }
-
-    public Set<Cell> getCells() {
-        return cells;
-    }
-
-    public Long getOffset() {
-        return offset;
+    public <T> T getByName(String name) {
+        return (T) cells.get(name);
     }
 
     public static class Builder {
-        private final Set<Cell> cells;
-        private Long offset;
+        private Map<String, Object> cells;
 
-        public Builder() {
-            this.cells = new HashSet<>();
-            this.offset = 0L;
+        public static Builder newBuilder() {
+            return new Builder(new HashMap<>());
+        }
+
+        public static Builder newBuilder(Record record) {
+            return new Builder(new HashMap<>(record.cells));
+        }
+
+        private Builder(Map<String, Object> cells) {
+            this.cells = cells;
         }
 
         public Builder cell(String name, Object value) {
-            cells.add(new Cell(name, value));
-            return this;
-        }
-
-        public Builder offset(Long offset) {
-            this.offset = offset;
+            cells.put(name, value);
             return this;
         }
 
         public Record build() {
-            return new Record(cells, offset);
+            return new Record(cells);
         }
     }
 }
