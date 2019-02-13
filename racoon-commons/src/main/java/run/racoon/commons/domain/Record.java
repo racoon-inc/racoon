@@ -1,8 +1,14 @@
 package run.racoon.commons.domain;
 
+import org.pojomatic.Pojomatic;
+import org.pojomatic.annotations.AutoProperty;
+
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+@AutoProperty
 public class Record {
     private final Map<String, Object> cells;
 
@@ -12,6 +18,11 @@ public class Record {
 
     public <T> T getByName(String name) {
         return (T) cells.get(name);
+    }
+
+    public Set<Cell> getCells() {
+        return cells.entrySet().stream()
+                .map(pair -> new Cell(pair.getKey(), pair.getValue())).collect(Collectors.toSet());
     }
 
     public static class Builder {
@@ -37,5 +48,10 @@ public class Record {
         public Record build() {
             return new Record(cells);
         }
+    }
+
+    @Override
+    public String toString() {
+        return Pojomatic.toString(this);
     }
 }
