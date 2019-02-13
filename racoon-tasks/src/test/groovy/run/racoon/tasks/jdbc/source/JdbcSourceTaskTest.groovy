@@ -64,7 +64,7 @@ class JdbcSourceTaskTest extends Specification {
     }
 
     def byName(record, name){
-        record.getByName(name).get().value
+        record.getByName(name)
     }
 
 }
