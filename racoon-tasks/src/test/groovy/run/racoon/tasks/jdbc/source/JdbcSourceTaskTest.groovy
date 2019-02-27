@@ -1,17 +1,14 @@
 package run.racoon.tasks.jdbc.source
 
 import org.junit.Rule
-import org.zapodot.junit.db.CompatibilityMode
 import org.zapodot.junit.db.EmbeddedDatabaseRule
+import run.racoon.tasks.jdbc.JdbcTestUtil
 import spock.lang.Specification
 
 class JdbcSourceTaskTest extends Specification {
 
     @Rule
-    EmbeddedDatabaseRule dbRule = EmbeddedDatabaseRule
-            .builder()
-            .withMode(CompatibilityMode.PostgreSQL)
-            .withInitialSql("""
+    EmbeddedDatabaseRule dbRule = JdbcTestUtil.createEmbeddedDatabaseRule("""
                 CREATE TABLE coons (
                   first_name VARCHAR,
                   last_name VARCHAR,
@@ -22,7 +19,6 @@ class JdbcSourceTaskTest extends Specification {
                 ('Coony', 'McRacoon', 4),
                 ('McCoon', 'Racoonator', 6);
             """)
-            .build()
 
     def "Should retrieve batched records"() {
         given:
