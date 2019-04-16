@@ -19,5 +19,6 @@ subprojects {
 
         testImplementation 'org.spockframework:spock-core:1.2-groovy-2.5'
         testImplementation 'org.codehaus.groovy:groovy:2.5.5'
+        testImplementation 'junit:junit:4.12'
     }
 }
