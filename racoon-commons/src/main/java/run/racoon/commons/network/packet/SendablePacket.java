@@ -4,7 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
-public abstract class SendablePacket extends Packet {
+public abstract class SendablePacket implements Packet {
     private final ByteArrayOutputStream byteArrayOutputStream;
 
     public SendablePacket() {
@@ -41,6 +41,7 @@ public abstract class SendablePacket extends Packet {
         byteArrayOutputStream.writeBytes(bytes);
     }
 
+    @Override
     public byte[] toBytes() {
         return byteArrayOutputStream.toByteArray();
     }

@@ -3,7 +3,6 @@ package run.racoon.network;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import run.racoon.commons.storage.Storage;
-import run.racoon.commons.storage.configuration.Configuration;
 import run.racoon.network.packet.receivable.AckRow;
 
 import java.io.IOException;
@@ -19,7 +18,7 @@ public class NetworkManager {
     private final Selector serverSelector;
     private final ServerSocketChannel serverSocketChannel;
 
-    public NetworkManager(Configuration config, Storage storage) throws IOException {
+    public NetworkManager(Storage storage) throws IOException {
         this.serverSelector = Selector.open();
         this.serverSocketChannel = ServerSocketChannel.open();
 
@@ -28,7 +27,7 @@ public class NetworkManager {
         serverSocketChannel.register(serverSelector, SelectionKey.OP_ACCEPT);
     }
 
-    public void startNetwork() throws IOException {
+    public void startListening() throws IOException {
         while (true) {
             if (serverSelector.select() == 0) {
                 continue;
@@ -40,7 +39,7 @@ public class NetworkManager {
                 SelectionKey key = iterator.next();
                 iterator.remove();
 
-                if(key.isAcceptable()) {
+                if (key.isAcceptable()) {
                     ServerSocketChannel server = (ServerSocketChannel)  key.channel();
                     SocketChannel client = server.accept();
                     client.configureBlocking(false);
@@ -48,7 +47,7 @@ public class NetworkManager {
                     continue;
                 }
 
-                if(key.isReadable()) {
+                if (key.isReadable()) {
                     SocketChannel client = (SocketChannel) key.channel();
 
                     int BUFFER_SIZE = 1024;

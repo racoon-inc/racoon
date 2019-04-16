@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
-public abstract class ReceivablePacket extends Packet {
+public abstract class ReceivablePacket implements Packet {
     private final byte[] bytes;
     private final ByteArrayInputStream byteArrayInputStream;
 
@@ -43,6 +43,7 @@ public abstract class ReceivablePacket extends Packet {
         return new String(bytes, StandardCharsets.UTF_8);
     }
 
+    @Override
     public byte[] toBytes() {
         return bytes;
     }
