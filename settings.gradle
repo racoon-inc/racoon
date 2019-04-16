@@ -1,5 +1,6 @@
 rootProject.name = 'racoon'
-include 'racoon-storage'
-include 'racoon-node'
 include 'racoon-commons'
 include 'racoon-network'
+include 'racoon-node'
+include 'racoon-storage'
+include 'racoon-tasks'

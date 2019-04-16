@@ -14,17 +14,16 @@ import run.racoon.node.handlers.EventHandler;
 import run.racoon.node.handlers.SourceRegistrationHandler;
 import run.racoon.node.handlers.StartPipelineHandler;
 import run.racoon.storage.StorageFactory;
-import run.racoon.storage.configuration.RacoonStorageConfiguration;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class RacoonNode {
     private static final Logger LOG = LoggerFactory.getLogger(RacoonNode.class);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         var configurationSources = new ArrayList<ConfigurationSource>();
         var argConfiguration = new ArgsConfiguration(args);
         configurationSources.add(argConfiguration);
@@ -48,8 +47,8 @@ public class RacoonNode {
         }
 
         LOG.info("Using configuration: {}", config);
-        var storageConfiguration = new RacoonStorageConfiguration(Collections.emptyList(), config.getName());
-        var storage = StorageFactory.getStorage(storageConfiguration);
+        var storageConfig = config.getStorageConfiguration();
+        var storage = StorageFactory.getStorage(storageConfig.getEngineClass(), storageConfig.getParameters());
         // TODO: load dynamic handlers?
         List<EventHandler> handlers = List.of(
                 new SourceRegistrationHandler(storage),

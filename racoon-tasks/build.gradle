@@ -5,11 +5,8 @@ plugins {
 group 'run.racoon'
 version '1.0-SNAPSHOT'
 
-repositories {
-    mavenCentral()
-}
-
 dependencies {
     implementation project(':racoon-commons')
-    compile 'net.openhft:chronicle-map:3.17.0'
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.zapodot:embedded-db-junit:1.1.1'
 }

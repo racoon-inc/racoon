@@ -3,4 +3,6 @@ peers:
   - racoon1
   - racoon2
 storage:
-  path: /bar
+  class: run.racoon.storage.InFileStorage
+  properties:
+    path: /tmp/racoon.dat
