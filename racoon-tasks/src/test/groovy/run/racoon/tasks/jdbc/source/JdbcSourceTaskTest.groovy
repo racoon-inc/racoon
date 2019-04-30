@@ -22,7 +22,7 @@ class JdbcSourceTaskTest extends Specification {
 
     def "Should retrieve batched records"() {
         given:
-        def state = new JdbcSourceTaskState(
+        def state = new JdbcSourceTaskTaskData(
                 dbRule.getConnectionJdbcUrl(),
                 "SELECT first_name, last_name, age FROM coons",
                 2
