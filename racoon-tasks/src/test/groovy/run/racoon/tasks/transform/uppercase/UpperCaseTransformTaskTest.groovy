@@ -9,7 +9,7 @@ class UpperCaseTransformTaskTest extends Specification {
     def "Transforms #value to #transformed"() {
         given:
         def transformation = new UpperCaseTransformTask()
-        transformation.configure(new UpperCaseState(["value"]))
+        transformation.start(new UpperCaseState(["value"]), null)
         def record = Record.Builder.newBuilder().cell("value", value).build()
         def result = transformation.transform([record]).get(0)
 

@@ -9,14 +9,14 @@ import run.racoon.commons.tasks.SinkTask;
 import java.sql.*;
 import java.util.List;
 
-public class JdbcSinkTask implements SinkTask<JdbcSinkTaskState> {
-    private JdbcSinkTaskState state;
+public class JdbcSinkTask implements SinkTask<JdbcSinkTaskTaskData> {
+    private JdbcSinkTaskTaskData state;
     private Connection connection;
     private PreparedStatement query;
     private ErrorHandler errorHandler;
 
     @Override
-    public void start(JdbcSinkTaskState state, ErrorHandler errorHandler) {
+    public void start(JdbcSinkTaskTaskData state, ErrorHandler errorHandler) {
         try {
             this.state = state;
             this.errorHandler = errorHandler;

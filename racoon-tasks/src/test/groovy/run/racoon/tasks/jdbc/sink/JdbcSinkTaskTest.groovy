@@ -19,7 +19,7 @@ class JdbcSinkTaskTest extends Specification {
 
     def "Should sink two messages"() {
         given:
-        def state = new JdbcSinkTaskState(
+        def state = new JdbcSinkTaskTaskData(
                 dbRule.getConnectionJdbcUrl(),
                 "INSERT INTO coons (first_name, last_name, age) VALUES (?, ?, ?);",
                 [first_name: 1, last_name: 2, age: 3]

@@ -1,6 +1,7 @@
 package run.racoon.tasks.transform.uppercase;
 
 import run.racoon.commons.domain.Record;
+import run.racoon.commons.handlers.ErrorHandler;
 import run.racoon.commons.tasks.TransformTask;
 
 import java.util.List;
@@ -12,7 +13,7 @@ public class UpperCaseTransformTask implements TransformTask<UpperCaseState> {
     private List<String> fields;
 
     @Override
-    public void configure(UpperCaseState state) {
+    public void start(UpperCaseState state, ErrorHandler errorHandler) {
         this.fields = state.getFieldNames();
     }
 
@@ -32,5 +33,10 @@ public class UpperCaseTransformTask implements TransformTask<UpperCaseState> {
         return ofNullable(value)
                         .map(Object::toString)
                         .map(String::toUpperCase).orElse(null);
+    }
+
+    @Override
+    public void close() {
+        // nothing to close
     }
 }

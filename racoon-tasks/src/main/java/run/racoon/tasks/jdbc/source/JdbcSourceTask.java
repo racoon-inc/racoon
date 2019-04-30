@@ -9,9 +9,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JdbcSourceTask implements SourceTask<JdbcSourceTaskState> {
+public class JdbcSourceTask implements SourceTask<JdbcSourceTaskTaskData> {
 
-    private JdbcSourceTaskState state;
+    private JdbcSourceTaskTaskData state;
     private Connection connection;
     private PreparedStatement query;
     private ResultSet resultSet;
@@ -19,7 +19,7 @@ public class JdbcSourceTask implements SourceTask<JdbcSourceTaskState> {
     private ErrorHandler errorHandler;
 
     @Override
-    public void start(JdbcSourceTaskState state, ErrorHandler errorHandler) {
+    public void start(JdbcSourceTaskTaskData state, ErrorHandler errorHandler) {
         try {
             this.state = state;
             this.errorHandler = errorHandler;

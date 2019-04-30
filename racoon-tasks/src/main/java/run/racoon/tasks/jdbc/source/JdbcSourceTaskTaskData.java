@@ -1,13 +1,14 @@
 package run.racoon.tasks.jdbc.source;
 
-import run.racoon.commons.domain.SourceState;
+import run.racoon.commons.domain.SourceTaskData;
+import run.racoon.commons.tasks.Task;
 
-public class JdbcSourceTaskState implements SourceState {
+public class JdbcSourceTaskTaskData implements SourceTaskData {
     private String jdbcUrl;
     private String query;
     private int batchSize;
 
-    public JdbcSourceTaskState(String jdbcUrl, String query, int batchSize) {
+    public JdbcSourceTaskTaskData(String jdbcUrl, String query, int batchSize) {
         this.jdbcUrl = jdbcUrl;
         this.query = query;
         this.batchSize = batchSize;
@@ -23,5 +24,12 @@ public class JdbcSourceTaskState implements SourceState {
 
     public int getBatchSize() {
         return this.batchSize;
+    }
+
+    @Override
+    public Task initiateTask() {
+        var task = new JdbcSourceTask();
+        task.start(this, null);
+        return task;
     }
 }
